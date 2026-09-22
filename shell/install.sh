@@ -14,7 +14,11 @@ clone https://github.com/zsh-users/zsh-syntax-highlighting.git "$HOME/.oh-my-zsh
 clone https://github.com/romkatv/powerlevel10k.git "$HOME/.oh-my-zsh/custom/themes/powerlevel10k"
 
 for target in .zshenv .zshrc .p10k.zsh; do
-  cp --remove-destination "$shell_dir/$target" "$HOME/$target"
+  if ! cmp -s "$shell_dir/$target" "$HOME/$target"; then
+    cp --remove-destination "$shell_dir/$target" "$HOME/$target"
+  fi
 done
 
-[[ ${SHELL:-} == /usr/bin/zsh ]] || chsh -s /usr/bin/zsh
+if [[ $(getent passwd "$(id -un)" | cut -d: -f7) != /usr/bin/zsh ]]; then
+  chsh -s /usr/bin/zsh
+fi

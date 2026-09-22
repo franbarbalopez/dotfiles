@@ -2,4 +2,7 @@
 set -euo pipefail
 
 omarchy pkg add otf-geist-mono-nerd
-omarchy font set "GeistMono Nerd Font"
+if [[ $(omarchy font current) != "GeistMono Nerd Font" ]] ||
+   { [[ -f "$HOME/.config/kitty/kitty.conf" ]] && ! grep -Eq '^font_family[[:space:]]+GeistMono Nerd Font[[:space:]]*$' "$HOME/.config/kitty/kitty.conf"; }; then
+  omarchy font set "GeistMono Nerd Font"
+fi

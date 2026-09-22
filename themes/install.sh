@@ -1,4 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-omarchy theme set "Matte Black"
+if [[ $(omarchy theme current) != "Matte Black" ]]; then
+  omarchy theme set "Matte Black"
+fi

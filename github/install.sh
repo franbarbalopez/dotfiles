@@ -4,7 +4,15 @@ set -euo pipefail
 if ! gh auth status --hostname github.com >/dev/null 2>&1; then
   gh auth login --hostname github.com --git-protocol ssh --web --skip-ssh-key \
     --scopes admin:public_key,admin:ssh_signing_key
-else
+
+fi
+
+# Inspect OAuth permissions without exposing the token. Token-based credentials
+# may omit this header; their permissions are enforced by the API instead.
+headers=$(gh api --hostname github.com --include user)
+scopes=$(awk 'tolower($0) ~ /^x-oauth-scopes:/ {sub(/^[^:]*: */, ""); gsub(/[ \r]/, ""); print}' <<< "$headers")
+if [[ -n $scopes ]] &&
+   { [[ ,$scopes, != *,admin:public_key,* ]] || [[ ,$scopes, != *,admin:ssh_signing_key,* ]]; }; then
   gh auth refresh --hostname github.com --scopes admin:public_key,admin:ssh_signing_key
 fi
 
@@ -54,12 +62,20 @@ for type in authentication signing; do
   fi
 done
 
-gh config set git_protocol ssh --host github.com
+if [[ $(gh config get git_protocol --host github.com) != ssh ]]; then
+  gh config set git_protocol ssh --host github.com
+fi
+
+set_git_config() {
+  if [[ $(git config --global --get "$1" || true) != "$2" ]]; then
+    git config --global "$1" "$2"
+  fi
+}
 # Also use SSH for existing HTTPS GitHub remotes, without editing each repo.
-git config --global url."git@github.com:".insteadOf https://github.com/
-git config --global gpg.format ssh
-git config --global user.signingkey "$key"
-git config --global commit.gpgsign true
+set_git_config url."git@github.com:".insteadOf https://github.com/
+set_git_config gpg.format ssh
+set_git_config user.signingkey "$key"
+set_git_config commit.gpgsign true
 
 printf '\nGitHub SSH access and commit signing configured.\n'
 printf 'For a passphrase-protected key, load it into your session agent with: ssh-add %q\n' "$key"
