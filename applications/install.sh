@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-omarchy pkg aur add slack-desktop github-desktop-bin claude-desktop tableplus
+omarchy pkg aur add slack-desktop github-desktop-bin claude-desktop tableplus postman-bin
 if ! omarchy pkg present openai-codex-desktop; then
   omarchy install ai chatgpt
 fi
