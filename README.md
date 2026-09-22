@@ -1,17 +1,8 @@
-# Shell configuration
+# Omarchy dotfiles
 
-Personal Zsh configuration for Omarchy and Arch Linux.
+Personal setup for **Omarchy**.
 
-It installs and configures:
-
-- Oh My Zsh
-- zsh-autosuggestions
-- zsh-syntax-highlighting
-- Powerlevel10k
-
-## Usage
-
-Clone the repository and run the installer as your regular user:
+## Install
 
 ```sh
 git clone https://github.com/franbarbalopez/dotfiles
@@ -19,4 +10,20 @@ cd dotfiles
 ./install.sh
 ```
 
-The script installs Zsh when needed, replaces the existing configuration and sets Zsh as the login shell. Log out and back in after it finishes.
+Log out and back in afterward.
+
+## Components
+
+The root installer runs these in order:
+
+| Folder | Setup |
+| --- | --- |
+| `applications/` | AUR: `slack-desktop`, `github-desktop-bin`, `claude-desktop`. Omarchy installers: ChatGPT, Zed with theme integration, Google Chrome. |
+| `terminals/` | Kitty as the default terminal. |
+| `development/` | Laravel via Omarchy: PHP, Composer, extensions, Xdebug, Node.js through mise, and Laravel installer. |
+| `themes/` | Matte Black. |
+| `fonts/` | `otf-geist-mono-nerd`; selects `GeistMono Nerd Font` for terminals and system monospace. |
+| `shell/` | Zsh as login shell, Oh My Zsh, autosuggestions, syntax highlighting, Powerlevel10k; loads Omarchy environment/aliases, mise, zoxide, fzf, and Composer's executable path. |
+| `github/` | GitHub authentication, SSH key registration, SSH Git operations, and automatic commit signing. |
+
+To install one component: `bash <folder>/install.sh`
