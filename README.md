@@ -18,7 +18,7 @@ The root installer runs these in order:
 
 | Folder | Setup |
 | --- | --- |
-| `applications/` | AUR: `slack-desktop`, `github-desktop-bin`, `claude-desktop`. Omarchy installers: ChatGPT, Zed with theme integration, Google Chrome. |
+| `applications/` | AUR: `slack-desktop`, `github-desktop-bin`, `claude-desktop`, `tableplus` and `postman-bin`. Omarchy installers: ChatGPT, Zed with theme integration, Google Chrome. |
 | `terminals/` | Kitty as the default terminal. |
 | `development/` | Laravel via Omarchy: PHP, Composer, extensions, Xdebug, Node.js through mise, and Laravel installer. |
 | `themes/` | Matte Black. |
